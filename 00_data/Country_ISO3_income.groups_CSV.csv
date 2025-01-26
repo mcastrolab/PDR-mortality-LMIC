@@ -1,0 +1,238 @@
+Country,ISO3,SDG_region,Subregion,Geographic region,development.groups,Less developed regions (excluding China),income.groups
+Aruba,ABW,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Afghanistan,AFG,Central and Southern Asia,Southern Asia,Asia,Least developed countries,yes,Lower-income
+Angola,AGO,Sub-Saharan Africa,Middle Africa,Africa,Least developed countries,yes,Lower-middle income
+Anguilla,AIA,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,No income group available
+Albania,ALB,Europe and Northern America,Southern Europe,Europe,More developed regions,,Upper-middle income
+Andorra,AND,Europe and Northern America,Southern Europe,Europe,More developed regions,,High-income
+United Arab Emirates,ARE,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,High-income
+Argentina,ARG,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Armenia,ARM,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,Upper-middle income
+American Samoa,ASM,Oceania (excluding Australia and New Zealand),Polynesia,Oceania,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Antigua and Barbuda,ATG,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Australia,AUS,Australia/New Zealand,Australia/New Zealand,Oceania,More developed regions,,High-income
+Austria,AUT,Europe and Northern America,Western Europe,Europe,More developed regions,,High-income
+Azerbaijan,AZE,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Burundi,BDI,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-income
+Belgium,BEL,Europe and Northern America,Western Europe,Europe,More developed regions,,High-income
+Benin,BEN,Sub-Saharan Africa,Western Africa,Africa,Least developed countries,yes,Lower-middle income
+"Bonaire, Sint Eustatius and Saba",BES,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,No income group available
+Burkina Faso,BFA,Sub-Saharan Africa,Western Africa,Africa,Least developed countries,yes,Lower-income
+Bangladesh,BGD,Central and Southern Asia,Southern Asia,Asia,Least developed countries,yes,Lower-middle income
+Bulgaria,BGR,Europe and Northern America,Eastern Europe,Europe,More developed regions,,Upper-middle income
+Bahrain,BHR,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,High-income
+Bahamas,BHS,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Bosnia and Herzegovina,BIH,Europe and Northern America,Southern Europe,Europe,More developed regions,,Upper-middle income
+Saint Barthélemy,BLM,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Belarus,BLR,Europe and Northern America,Eastern Europe,Europe,More developed regions,,Upper-middle income
+Belize,BLZ,Latin America and the Caribbean,Central America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Bermuda,BMU,Europe and Northern America,Northern America,Northern America,More developed regions,,High-income
+Bolivia (Plurinational State of),BOL,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Brazil,BRA,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Barbados,BRB,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Brunei Darussalam,BRN,Eastern and South-Eastern Asia,South-Eastern Asia,Asia,Less developed regions (excluding least developed countries),yes,High-income
+Bhutan,BTN,Central and Southern Asia,Southern Asia,Asia,Least developed countries,yes,Lower-middle income
+Botswana,BWA,Sub-Saharan Africa,Southern Africa,Africa,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Central African Republic,CAF,Sub-Saharan Africa,Middle Africa,Africa,Least developed countries,yes,Lower-income
+Canada,CAN,Europe and Northern America,Northern America,Northern America,More developed regions,,High-income
+Switzerland,CHE,Europe and Northern America,Western Europe,Europe,More developed regions,,High-income
+Chile,CHL,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+China,CHN,Eastern and South-Eastern Asia,Eastern Asia,Asia,Less developed regions (excluding least developed countries),,Upper-middle income
+Côte d'Ivoire,CIV,Sub-Saharan Africa,Western Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Cameroon,CMR,Sub-Saharan Africa,Middle Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Democratic Republic of the Congo,COD,Sub-Saharan Africa,Middle Africa,Africa,Least developed countries,yes,Lower-income
+Congo,COG,Sub-Saharan Africa,Middle Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Cook Islands,COK,Oceania (excluding Australia and New Zealand),Polynesia,Oceania,Less developed regions (excluding least developed countries),yes,No income group available
+Colombia,COL,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Comoros,COM,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-middle income
+Cabo Verde,CPV,Sub-Saharan Africa,Western Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Costa Rica,CRI,Latin America and the Caribbean,Central America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Cuba,CUB,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Curaçao,CUW,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Cayman Islands,CYM,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Cyprus,CYP,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,High-income
+Czechia,CZE,Europe and Northern America,Eastern Europe,Europe,More developed regions,,High-income
+Germany,DEU,Europe and Northern America,Western Europe,Europe,More developed regions,,High-income
+Djibouti,DJI,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-middle income
+Dominica,DMA,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Denmark,DNK,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+Dominican Republic,DOM,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Algeria,DZA,Northern Africa and Western Asia,Northern Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Ecuador,ECU,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Egypt,EGY,Northern Africa and Western Asia,Northern Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Eritrea,ERI,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-income
+Western Sahara,ESH,Northern Africa and Western Asia,Northern Africa,Africa,Less developed regions (excluding least developed countries),yes,No income group available
+Spain,ESP,Europe and Northern America,Southern Europe,Europe,More developed regions,,High-income
+Estonia,EST,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+Ethiopia,ETH,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-income
+Finland,FIN,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+Fiji,FJI,Oceania (excluding Australia and New Zealand),Melanesia,Oceania,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Falkland Islands (Malvinas),FLK,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,No income group available
+France,FRA,Europe and Northern America,Western Europe,Europe,More developed regions,,High-income
+Faroe Islands,FRO,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+Micronesia (Fed. States of),FSM,Oceania (excluding Australia and New Zealand),Micronesia,Oceania,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Gabon,GAB,Sub-Saharan Africa,Middle Africa,Africa,Less developed regions (excluding least developed countries),yes,Upper-middle income
+United Kingdom,GBR,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+Georgia,GEO,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Guernsey,GGY,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+Ghana,GHA,Sub-Saharan Africa,Western Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Gibraltar,GIB,Europe and Northern America,Southern Europe,Europe,More developed regions,,High-income
+Guinea,GIN,Sub-Saharan Africa,Western Africa,Africa,Least developed countries,yes,Lower-income
+Guadeloupe,GLP,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Gambia,GMB,Sub-Saharan Africa,Western Africa,Africa,Least developed countries,yes,Lower-income
+Guinea-Bissau,GNB,Sub-Saharan Africa,Western Africa,Africa,Least developed countries,yes,Lower-income
+Equatorial Guinea,GNQ,Sub-Saharan Africa,Middle Africa,Africa,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Greece,GRC,Europe and Northern America,Southern Europe,Europe,More developed regions,,High-income
+Grenada,GRD,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Greenland,GRL,Europe and Northern America,Northern America,Northern America,More developed regions,,High-income
+Guatemala,GTM,Latin America and the Caribbean,Central America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+French Guiana,GUF,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Guam,GUM,Oceania (excluding Australia and New Zealand),Micronesia,Oceania,Less developed regions (excluding least developed countries),yes,High-income
+Guyana,GUY,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+"China, Hong Kong SAR",HKG,Eastern and South-Eastern Asia,Eastern Asia,Asia,Less developed regions (excluding least developed countries),,High-income
+Honduras,HND,Latin America and the Caribbean,Central America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Croatia,HRV,Europe and Northern America,Southern Europe,Europe,More developed regions,,High-income
+Haiti,HTI,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Least developed countries,yes,Lower-middle income
+Hungary,HUN,Europe and Northern America,Eastern Europe,Europe,More developed regions,,High-income
+Indonesia,IDN,Eastern and South-Eastern Asia,South-Eastern Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Isle of Man,IMN,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+India,IND,Central and Southern Asia,Southern Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Ireland,IRL,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+Iran (Islamic Republic of),IRN,Central and Southern Asia,Southern Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Iraq,IRQ,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Iceland,ISL,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+Israel,ISR,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,High-income
+Italy,ITA,Europe and Northern America,Southern Europe,Europe,More developed regions,,High-income
+Jamaica,JAM,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Jersey,JEY,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+Jordan,JOR,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Japan,JPN,Eastern and South-Eastern Asia,Eastern Asia,Asia,More developed regions,,High-income
+Kazakhstan,KAZ,Central and Southern Asia,Central Asia,Asia,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Kenya,KEN,Sub-Saharan Africa,Eastern Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Kyrgyzstan,KGZ,Central and Southern Asia,Central Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Cambodia,KHM,Eastern and South-Eastern Asia,South-Eastern Asia,Asia,Least developed countries,yes,Lower-middle income
+Kiribati,KIR,Oceania (excluding Australia and New Zealand),Micronesia,Oceania,Least developed countries,yes,Lower-middle income
+Saint Kitts and Nevis,KNA,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Republic of Korea,KOR,Eastern and South-Eastern Asia,Eastern Asia,Asia,Less developed regions (excluding least developed countries),yes,High-income
+Kuwait,KWT,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,High-income
+Lao People's Democratic Republic,LAO,Eastern and South-Eastern Asia,South-Eastern Asia,Asia,Least developed countries,yes,Lower-middle income
+Lebanon,LBN,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Liberia,LBR,Sub-Saharan Africa,Western Africa,Africa,Least developed countries,yes,Lower-income
+Libya,LBY,Northern Africa and Western Asia,Northern Africa,Africa,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Saint Lucia,LCA,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Liechtenstein,LIE,Europe and Northern America,Western Europe,Europe,More developed regions,,High-income
+Sri Lanka,LKA,Central and Southern Asia,Southern Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Lesotho,LSO,Sub-Saharan Africa,Southern Africa,Africa,Least developed countries,yes,Lower-middle income
+Lithuania,LTU,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+Luxembourg,LUX,Europe and Northern America,Western Europe,Europe,More developed regions,,High-income
+Latvia,LVA,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+"China, Macao SAR",MAC,Eastern and South-Eastern Asia,Eastern Asia,Asia,Less developed regions (excluding least developed countries),,High-income
+Saint Martin (French part),MAF,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Morocco,MAR,Northern Africa and Western Asia,Northern Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Monaco,MCO,Europe and Northern America,Western Europe,Europe,More developed regions,,High-income
+Republic of Moldova,MDA,Europe and Northern America,Eastern Europe,Europe,More developed regions,,Upper-middle income
+Madagascar,MDG,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-income
+Maldives,MDV,Central and Southern Asia,Southern Asia,Asia,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Mexico,MEX,Latin America and the Caribbean,Central America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Marshall Islands,MHL,Oceania (excluding Australia and New Zealand),Micronesia,Oceania,Less developed regions (excluding least developed countries),yes,Upper-middle income
+North Macedonia,MKD,Europe and Northern America,Southern Europe,Europe,More developed regions,,Upper-middle income
+Mali,MLI,Sub-Saharan Africa,Western Africa,Africa,Least developed countries,yes,Lower-income
+Malta,MLT,Europe and Northern America,Southern Europe,Europe,More developed regions,,High-income
+Myanmar,MMR,Eastern and South-Eastern Asia,South-Eastern Asia,Asia,Least developed countries,yes,Lower-middle income
+Montenegro,MNE,Europe and Northern America,Southern Europe,Europe,More developed regions,,Upper-middle income
+Mongolia,MNG,Eastern and South-Eastern Asia,Eastern Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Northern Mariana Islands,MNP,Oceania (excluding Australia and New Zealand),Micronesia,Oceania,Less developed regions (excluding least developed countries),yes,High-income
+Mozambique,MOZ,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-income
+Mauritania,MRT,Sub-Saharan Africa,Western Africa,Africa,Least developed countries,yes,Lower-middle income
+Montserrat,MSR,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,No income group available
+Martinique,MTQ,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Mauritius,MUS,Sub-Saharan Africa,Eastern Africa,Africa,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Malawi,MWI,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-income
+Malaysia,MYS,Eastern and South-Eastern Asia,South-Eastern Asia,Asia,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Mayotte,MYT,Sub-Saharan Africa,Eastern Africa,Africa,Less developed regions (excluding least developed countries),yes,High-income
+Namibia,NAM,Sub-Saharan Africa,Southern Africa,Africa,Less developed regions (excluding least developed countries),yes,Upper-middle income
+New Caledonia,NCL,Oceania (excluding Australia and New Zealand),Melanesia,Oceania,Less developed regions (excluding least developed countries),yes,High-income
+Niger,NER,Sub-Saharan Africa,Western Africa,Africa,Least developed countries,yes,Lower-income
+Nigeria,NGA,Sub-Saharan Africa,Western Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Nicaragua,NIC,Latin America and the Caribbean,Central America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Niue,NIU,Oceania (excluding Australia and New Zealand),Polynesia,Oceania,Less developed regions (excluding least developed countries),yes,No income group available
+Netherlands,NLD,Europe and Northern America,Western Europe,Europe,More developed regions,,High-income
+Norway,NOR,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+Nepal,NPL,Central and Southern Asia,Southern Asia,Asia,Least developed countries,yes,Lower-middle income
+Nauru,NRU,Oceania (excluding Australia and New Zealand),Micronesia,Oceania,Less developed regions (excluding least developed countries),yes,High-income
+New Zealand,NZL,Australia/New Zealand,Australia/New Zealand,Oceania,More developed regions,,High-income
+Oman,OMN,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,High-income
+Pakistan,PAK,Central and Southern Asia,Southern Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Panama,PAN,Latin America and the Caribbean,Central America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Peru,PER,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Philippines,PHL,Eastern and South-Eastern Asia,South-Eastern Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Palau,PLW,Oceania (excluding Australia and New Zealand),Micronesia,Oceania,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Papua New Guinea,PNG,Oceania (excluding Australia and New Zealand),Melanesia,Oceania,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Poland,POL,Europe and Northern America,Eastern Europe,Europe,More developed regions,,High-income
+Puerto Rico,PRI,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Dem. People's Republic of Korea,PRK,Eastern and South-Eastern Asia,Eastern Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-income
+Portugal,PRT,Europe and Northern America,Southern Europe,Europe,More developed regions,,High-income
+Paraguay,PRY,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+State of Palestine,PSE,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+French Polynesia,PYF,Oceania (excluding Australia and New Zealand),Polynesia,Oceania,Less developed regions (excluding least developed countries),yes,High-income
+Qatar,QAT,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,High-income
+Réunion,REU,Sub-Saharan Africa,Eastern Africa,Africa,Less developed regions (excluding least developed countries),yes,High-income
+Romania,ROU,Europe and Northern America,Eastern Europe,Europe,More developed regions,,High-income
+Russian Federation,RUS,Europe and Northern America,Eastern Europe,Europe,More developed regions,,Upper-middle income
+Rwanda,RWA,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-income
+Saudi Arabia,SAU,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,High-income
+Sudan,SDN,Northern Africa and Western Asia,Northern Africa,Africa,Least developed countries,yes,Lower-income
+Senegal,SEN,Sub-Saharan Africa,Western Africa,Africa,Least developed countries,yes,Lower-middle income
+Singapore,SGP,Eastern and South-Eastern Asia,South-Eastern Asia,Asia,Less developed regions (excluding least developed countries),yes,High-income
+Saint Helena,SHN,Sub-Saharan Africa,Western Africa,Africa,Less developed regions (excluding least developed countries),yes,No income group available
+Solomon Islands,SLB,Oceania (excluding Australia and New Zealand),Melanesia,Oceania,Least developed countries,yes,Lower-middle income
+Sierra Leone,SLE,Sub-Saharan Africa,Western Africa,Africa,Least developed countries,yes,Lower-income
+El Salvador,SLV,Latin America and the Caribbean,Central America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Lower-middle income
+San Marino,SMR,Europe and Northern America,Southern Europe,Europe,More developed regions,,High-income
+Somalia,SOM,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-income
+Saint Pierre and Miquelon,SPM,Europe and Northern America,Northern America,Northern America,More developed regions,,High-income
+Serbia,SRB,Europe and Northern America,Southern Europe,Europe,More developed regions,,Upper-middle income
+South Sudan,SSD,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-income
+Sao Tome and Principe,STP,Sub-Saharan Africa,Middle Africa,Africa,Least developed countries,yes,Lower-middle income
+Suriname,SUR,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Slovakia,SVK,Europe and Northern America,Eastern Europe,Europe,More developed regions,,High-income
+Slovenia,SVN,Europe and Northern America,Southern Europe,Europe,More developed regions,,High-income
+Sweden,SWE,Europe and Northern America,Northern Europe,Europe,More developed regions,,High-income
+Eswatini,SWZ,Sub-Saharan Africa,Southern Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Sint Maarten (Dutch part),SXM,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Seychelles,SYC,Sub-Saharan Africa,Eastern Africa,Africa,Less developed regions (excluding least developed countries),yes,High-income
+Syrian Arab Republic,SYR,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-income
+Turks and Caicos Islands,TCA,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Chad,TCD,Sub-Saharan Africa,Middle Africa,Africa,Least developed countries,yes,Lower-income
+Togo,TGO,Sub-Saharan Africa,Western Africa,Africa,Least developed countries,yes,Lower-income
+Thailand,THA,Eastern and South-Eastern Asia,South-Eastern Asia,Asia,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Tajikistan,TJK,Central and Southern Asia,Central Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Tokelau,TKL,Oceania (excluding Australia and New Zealand),Polynesia,Oceania,Less developed regions (excluding least developed countries),yes,No income group available
+Turkmenistan,TKM,Central and Southern Asia,Central Asia,Asia,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Timor-Leste,TLS,Eastern and South-Eastern Asia,South-Eastern Asia,Asia,Least developed countries,yes,Lower-middle income
+Tonga,TON,Oceania (excluding Australia and New Zealand),Polynesia,Oceania,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Trinidad and Tobago,TTO,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Tunisia,TUN,Northern Africa and Western Asia,Northern Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Türkiye,TUR,Northern Africa and Western Asia,Western Asia,Asia,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Tuvalu,TUV,Oceania (excluding Australia and New Zealand),Polynesia,Oceania,Least developed countries,yes,Upper-middle income
+"China, Taiwan Province of China",TWN,Eastern and South-Eastern Asia,Eastern Asia,Asia,Less developed regions (excluding least developed countries),,High-income
+United Republic of Tanzania,TZA,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-middle income
+Uganda,UGA,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-income
+Ukraine,UKR,Europe and Northern America,Eastern Europe,Europe,More developed regions,,Lower-middle income
+Uruguay,URY,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+United States of America,USA,Europe and Northern America,Northern America,Northern America,More developed regions,,High-income
+Uzbekistan,UZB,Central and Southern Asia,Central Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Holy See,VAT,Europe and Northern America,Southern Europe,Europe,More developed regions,,No income group available
+Saint Vincent and the Grenadines,VCT,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Venezuela (Bolivarian Republic of),VEN,Latin America and the Caribbean,South America,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,No income group available
+British Virgin Islands,VGB,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+United States Virgin Islands,VIR,Latin America and the Caribbean,Caribbean,Latin America and the Caribbean,Less developed regions (excluding least developed countries),yes,High-income
+Viet Nam,VNM,Eastern and South-Eastern Asia,South-Eastern Asia,Asia,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Vanuatu,VUT,Oceania (excluding Australia and New Zealand),Melanesia,Oceania,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Wallis and Futuna Islands,WLF,Oceania (excluding Australia and New Zealand),Polynesia,Oceania,Less developed regions (excluding least developed countries),yes,No income group available
+Samoa,WSM,Oceania (excluding Australia and New Zealand),Polynesia,Oceania,Less developed regions (excluding least developed countries),yes,Lower-middle income
+Kosovo (under UNSC res. 1244),XKX,Europe and Northern America,Southern Europe,Europe,More developed regions,,Upper-middle income
+Yemen,YEM,Northern Africa and Western Asia,Western Asia,Asia,Least developed countries,yes,Lower-income
+South Africa,ZAF,Sub-Saharan Africa,Southern Africa,Africa,Less developed regions (excluding least developed countries),yes,Upper-middle income
+Zambia,ZMB,Sub-Saharan Africa,Eastern Africa,Africa,Least developed countries,yes,Lower-income
+Zimbabwe,ZWE,Sub-Saharan Africa,Eastern Africa,Africa,Less developed regions (excluding least developed countries),yes,Lower-middle income
