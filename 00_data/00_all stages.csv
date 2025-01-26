@@ -1,0 +1,158 @@
+ISO3,country,inc_group_2019,stage_1,stage_2,stage_3,stage_3_adv,stage_2019
+ALB,Albania,Lower-middle,1981,1980-2000,1950-1980,,Stage 3
+BLR,Belarus,Upper-middle,1961,2000-2019,1950-1980,1980-2000,Stage 3
+BGR,Bulgaria,Upper-middle,1961,2000-2019,1980-2000,,Stage 3
+GRC,Greece,Upper-middle,1960,1950-1980,1950-1980,1980-2000,Stage 3
+HUN,Hungary,Upper-middle,1996,1980-2000,1980-2000,2000-2019,Stage 3
+LVA,Latvia,Upper-middle,1960,2000-2019,1950-1980,,Stage 3
+PRT,Portugal,Upper-middle,1977,1980-2000,1980-2000,,Stage 3
+MDA,Republic of Moldova,Lower-middle,2011,2000-2019,2000-2019,1980-2000,Stage 3
+ROU,Romania,Upper-middle,1991,1980-2000,1980-2000,,Stage 3
+RUS,Russian Federation,Upper-middle,1986,2000-2019,1950-1980,1980-2000,Stage 3
+UKR,Ukraine,Lower-middle,1961,2000-2019,1950-1980,1980-2000,Stage 3
+DZA,Algeria,Upper-middle,1999,1980-2000,2000-2019,,Stage 3
+ARM,Armenia,Upper-middle,1998,2000-2019,1980-2000,,Stage 3
+AZE,Azerbaijan,Upper-middle,2010,2000-2019,2000-2019,,Stage 3
+EGY,Egypt,Lower-middle,2015,2000-2019,,,Stage 2
+GEO,Georgia,Upper-middle,1996,1950-1980,2000-2019,,Stage 3
+IRQ,Iraq,Upper-middle,2018,2000-2019,,,Stage 2
+JOR,Jordan,Lower-middle,1990,1980-2000,2000-2019,,Stage 3
+LBN,Lebanon,Upper-middle,1991,1980-2000,1950-1980,,Stage 3
+LBY,Libya,Upper-middle,1993,2000-2019,1980-2000,,Stage 3
+MAR,Morocco,Lower-middle,2008,2000-2019,,,Stage 2
+PSE,State of Palestine,Lower-middle,1997,1980-2000,2000-2019,,Stage 3
+SYR,Syrian Arab Republic,Low,1991,2000-2019,2000-2019,,Stage 3
+TUR,Türkiye,Upper-middle,1996,2000-2019,2000-2019,,Stage 3
+TUN,Tunisia,Lower-middle,1994,2000-2019,1980-2000,,Stage 3
+BGD,Bangladesh,Lower-middle,2014,2000-2019,2000-2019,,Stage 3
+IND,India,Lower-middle,2017,2000-2019,2000-2019,,Stage 3
+IRN,Iran (Islamic Republic of),Upper-middle,2000,1980-2000,2000-2019,,Stage 3
+KAZ,Kazakhstan,Upper-middle,2013,2000-2019,1980-2000,1980-2000,Stage 3
+KGZ,Kyrgyzstan,Lower-middle,2017,1950-1980,1980-2000,,Stage 3
+LKA,Sri Lanka,Lower-middle,1993,1950-1980,1980-2000,,Stage 3
+TJK,Tajikistan,Lower-middle,2017,2000-2019,,,Stage 2
+UZB,Uzbekistan,Lower-middle,2011,2000-2019,1980-2000,,Stage 3
+KHM,Cambodia,Low,2019,,,,Stage 1
+CHN,China,Upper-middle,1995,1980-2000,1980-2000,,Stage 3
+IDN,Indonesia,Lower-middle,2018,2000-2019,2000-2019,,Stage 3
+MYS,Malaysia,Upper-middle,1986,1950-1980,1980-2000,2000-2019,Stage 3
+MNG,Mongolia,Upper-middle,2017,2000-2019,2000-2019,,Stage 3
+THA,Thailand,Upper-middle,1997,1980-2000,1980-2000,2000-2019,Stage 3
+VNM,Viet Nam,Lower-middle,1994,1980-2000,1980-2000,2000-2019,Stage 3
+CPV,Cabo Verde,Lower-middle ,2003,1980-2000,2000-2019,,Stage 3
+MUS,Mauritius,Upper-middle ,1991,1950-1980,1980-2000,2000-2019,Stage 3
+ARG,Argentina,Upper-middle,1986,1950-1980,1950-1980,2000-2019,Stage 3
+BRB,Barbados,Lower-middle,1976,1980-2000,1980-2000,,Stage 3
+BRA,Brazil,Upper-middle,2002,2000-2019,2000-2019,,Stage 3
+CHL,Chile,Upper-middle,1982,1980-2000,1980-2000,2000-2019,Stage 3
+COL,Colombia,Upper-middle,1996,1980-2000,1980-2000,,Stage 3
+CRI,Costa Rica,Upper-middle,1975,1950-1980,1980-2000,1980-2000,Stage 3
+CUB,Cuba,Lower-middle,1975,1950-1980,1950-1980,1980-2000,Stage 3
+DMA,Dominica,Lower-middle,1978,2000-2019,1980-2000,2000-2019,Stage 3
+DOM,Dominican Republic,Upper-middle,1999,2000-2019,1980-2000,1980-2000,Stage 3
+ECU,Ecuador,Lower-middle,1993,1980-2000,1980-2000,2000-2019,Stage 3
+SLV,El Salvador,Lower-middle,2008,1980-2000,1950-1980,,Stage 3
+GTM,Guatemala,Lower-middle,2011,1980-2000,,,Stage 2
+HND,Honduras,Lower-middle,2011,2000-2019,2000-2019,,Stage 3
+JAM,Jamaica,Lower-middle,1985,2000-2019,2000-2019,,Stage 3
+MEX,Mexico,Upper-middle,1994,1980-2000,2000-2019,2000-2019,Stage 3
+NIC,Nicaragua,Lower-middle,2005,2000-2019,,,Stage 2
+PAN,Panama,Upper-middle,1983,1950-1980,1980-2000,2000-2019,Stage 3
+PRY,Paraguay,Lower-middle,2000,1950-1980,1980-2000,,Stage 3
+PER,Peru,Upper-middle,2001,2000-2019,1980-2000,2000-2019,Stage 3
+LCA,Saint Lucia,Lower-middle,1984,1980-2000,1980-2000,,Stage 3
+TTO,Trinidad and Tobago,Upper-middle,2005,1950-1980,1980-2000,,Stage 3
+URY,Uruguay,Upper-middle,1977,1950-1980,1950-1980,1980-2000,Stage 3
+VEN,Venezuela (Bolivarian Republic of),Lower-middle,1986,1950-1980,1980-2000,,Stage 3
+AFG,Afghanistan,,,,,,Has not reached Stage 1
+AGO,Angola,,,,,,Has not reached Stage 1
+BEN,Benin,,,,,,Has not reached Stage 1
+BOL,Plurinational State of Bolivia,,,,,,Has not reached Stage 1
+BWA,Botswana,,,,,,Has not reached Stage 1
+BFA,Burkina Faso,,,,,,Has not reached Stage 1
+BDI,Burundi,,,,,,Has not reached Stage 1
+CMR,Cameroon,,,,,,Has not reached Stage 1
+CAF,Central African Republic,,,,,,Has not reached Stage 1
+TCD,Chad,,,,,,Has not reached Stage 1
+COM,Comoros,,,,,,Has not reached Stage 1
+COG,Congo,,,,,,Has not reached Stage 1
+CIV,Côte d'Ivoire,,,,,,Has not reached Stage 1
+COD,Democratic Republic of the Congo,,,,,,Has not reached Stage 1
+DJI,Djibouti,,,,,,Has not reached Stage 1
+GNQ,Equatorial Guinea,,,,,,Has not reached Stage 1
+SWZ,Eswatini,,,,,,Has not reached Stage 1
+ETH,Ethiopia,,,,,,Has not reached Stage 1
+GAB,Gabon,,,,,,Has not reached Stage 1
+GMB,Gambia,,,,,,Has not reached Stage 1
+GHA,Ghana,,,,,,Has not reached Stage 1
+GIN,Guinea,,,,,,Has not reached Stage 1
+GNB,Guinea-Bissau,,,,,,Has not reached Stage 1
+HTI,Haiti,,,,,,Has not reached Stage 1
+KEN,Kenya,,,,,,Has not reached Stage 1
+LAO,Lao People's Democratic Republic,,,,,,Has not reached Stage 1
+LSO,Lesotho,,,,,,Has not reached Stage 1
+LBR,Liberia,,,,,,Has not reached Stage 1
+MDG,Madagascar,,,,,,Has not reached Stage 1
+MWI,Malawi,,,,,,Has not reached Stage 1
+MLI,Mali,,,,,,Has not reached Stage 1
+MRT,Mauritania,,,,,,Has not reached Stage 1
+MOZ,Mozambique,,,,,,Has not reached Stage 1
+MMR,Myanmar,,,,,,Has not reached Stage 1
+NAM,Namibia,,,,,,Has not reached Stage 1
+NPL,Nepal,,,,,,Has not reached Stage 1
+NER,Niger,,,,,,Has not reached Stage 1
+NGA,Nigeria,,,,,,Has not reached Stage 1
+PAK,Pakistan,,,,,,Has not reached Stage 1
+PHL,Philippines,,,,,,Has not reached Stage 1
+RWA,Rwanda,,,,,,Has not reached Stage 1
+STP,Sao Tome and Principe,,,,,,Has not reached Stage 1
+SEN,Senegal,,,,,,Has not reached Stage 1
+SLE,Sierra Leone,,,,,,Has not reached Stage 1
+ZAF,South Africa,,,,,,Has not reached Stage 1
+SDN,Sudan,,,,,,Has not reached Stage 1
+TGO,Togo,,,,,,Has not reached Stage 1
+TKM,Turkmenistan,,,,,,Has not reached Stage 1
+UGA,Uganda,,,,,,Has not reached Stage 1
+TZA,United Republic of Tanzania,,,,,,Has not reached Stage 1
+YEM,Yemen,,,,,,Has not reached Stage 1
+ZMB,Zambia,,,,,,Has not reached Stage 1
+ZWE,Zimbabwe,,,,,,Has not reached Stage 1
+ARE,United Arab Emirates,,,,,,High income country
+AUS,Australia,,,,,,High income country
+AUT,Austria,,,,,,High income country
+BEL,Belgium,,,,,,High income country
+BHR,Bahrain,,,,,,High income country
+CAN,Canada,,,,,,High income country
+CHE,Switzerland,,,,,,High income country
+CYP,Cyprus,,,,,,High income country
+DEU,Germany,,,,,,High income country
+DNK,Denmark,,,,,,High income country
+ESP,Spain,,,,,,High income country
+EST,Estonia,,,,,,High income country
+FIN,Finland,,,,,,High income country
+FRA,France,,,,,,High income country
+GBR,United Kingdom,,,,,,High income country
+HKG,"China, Hong Kong SAR",,,,,,High income country
+IRL,Ireland,,,,,,High income country
+ISL,Iceland,,,,,,High income country
+ISR,Israel,,,,,,High income country
+ITA,Italy,,,,,,High income country
+JPN,Japan,,,,,,High income country
+KOR,Republic of Korea,,,,,,High income country
+KWT,Kuwait,,,,,,High income country
+LTU,Lithuania,,,,,,High income country
+LUX,Luxembourg,,,,,,High income country
+MLT,Malta,,,,,,High income country
+NLD,Netherlands,,,,,,High income country
+NOR,Norway,,,,,,High income country
+NZL,New Zealand,,,,,,High income country
+OMN,Oman,,,,,,High income country
+POL,Poland,,,,,,High income country
+PRI,Puerto Rico,,,,,,High income country
+QAT,Qatar,,,,,,High income country
+SAU,Saudi Arabia,,,,,,High income country
+SGP,Singapore,,,,,,High income country
+SWE,Sweden,,,,,,High income country
+SYC,Seychelles,,,,,,High income country
+TWN,"Taiwan, Province of China",,,,,,High income country
+USA,United States,,,,,,High income country
