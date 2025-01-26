@@ -1,0 +1,177 @@
+---
+title: "Untitled"
+author: "Jamie Ponmattam"
+date: "2025-01-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+library(tidyverse)
+library(data.table)
+library(lubridate)
+library(haven)
+library(MoMAColors)
+library(ggtern)
+library(openxlsx)
+library(combinat)
+library(Hmisc)
+```
+
+
+```{r}
+df.gdp <- read.xlsx("C:/Users/j.ponmattam/OneDrive - Harvard University/LMIC_population and mortality/20241004_GDP_income group/mpd2023_web.xlsx", sheet = "Full data") %>%
+  rename(ISO3 = countrycode) %>%
+  select(ISO3, year, country, gdppc) %>%
+  filter(year %in% c(1950, 2019)) %>%
+  mutate(ISO3_v2 = if_else(ISO3 %in% c("ARM", "AZE", "BLR", "EST", "GEO", "KAZ", "KGZ", "LTU",
+                                    "LVA", "MDA", "TJK", "TKM", "UKR", "UZB") & year == 1950, "SUN", ISO3)) 
+
+
+df.gdp %>%
+  filter(is.na(gdppc)) %>%
+  filter(!ISO3_v2 == "SUN") %>%
+  select(ISO3_v2, country) %>%
+  unique()
+
+
+
+
+(iso3.na <- df.gdp %>%
+  filter(is.na(gdppc)) %>%
+  filter(!ISO3_v2 == "SUN") %>%
+  pull(ISO3)
+)
+
+
+#   ISO3                country
+# 1  BIH Bosnia and Herzegovina
+# 2  CZE         Czech Republic
+# 3  HRV                Croatia
+# 4  MKD      TFYR of Macedonia
+# 5  MNE             Montenegro
+# 6  PRK        D.P.R. of Korea
+# 7  SRB                 Serbia
+# 8  SVK               Slovakia
+# 9  SVN               Slovenia
+
+
+(gdppc.sun.1950 <- df.gdp %>%
+    filter(country == "Former USSR") %>%
+    filter(year == 1950) %>%
+    pull(gdppc)) 
+
+
+
+df.gdp.cat <- df.gdp %>%
+  filter(!country == "Former USSR") %>%
+  mutate(gdppc = if_else(ISO3_v2 == "SUN", gdppc.sun.1950, gdppc )) %>%
+  select(-ISO3_v2) %>%
+  filter(!ISO3 %in% iso3.na) %>%
+  group_by(year) %>%
+  mutate(quant = cut(gdppc, breaks = quantile(gdppc, probs = seq(0, 1, by = 0.25)), include.lowest = TRUE, ) ) %>%
+  ungroup() %>%
+  mutate(inc.group.gdp = case_when(
+    quant %in% c("[462,1.11e+03]","[583,1.94e+03]", "[414,2.18e+03]", "[624,4.19e+03]")~ "Lower-income" ,
+    quant %in% c("(1.11e+03,2.48e+03]", "(1.94e+03,6.07e+03]", "(2.18e+03,6.59e+03]", "(4.19e+03,1.23e+04]")~ "Lower-middle income" ,
+    quant %in% c("(2.48e+03,4.53e+03]", "(6.07e+03,1.21e+04]", "(6.59e+03,1.53e+04]", "(1.23e+04,2.83e+04]")~ "Upper-middle income" ,
+    quant %in% c("(4.53e+03,4.84e+04]", "(1.21e+04,4.59e+04]", "(1.53e+04,5.4e+04]", "(2.83e+04,1.51e+05]") ~ "High-income" 
+  ))  %>%
+  mutate(inc.group.gdp = factor(inc.group.gdp, levels = c( "High-income", "Upper-middle income", "Lower-middle income", "Lower-income"))) %>%
+  select(ISO3, year, inc.group.gdp) %>%
+  filter(!ISO3 %in% c("CSK", "YUG"))
+  
+
+```
+
+```{r}
+df.countries <- fread("stage_ISO3/stage_ISO3.csv")
+```
+
+
+
+```{r}
+df.world.stages <- full_join(df.countries, df.gdp.cat %>% filter(year == 2019) ) %>%
+  mutate(`Stage Reached` =  if_else(is.na(`Stage Reached`), "No GDP data available", `Stage Reached` ))
+```
+
+
+
+
+# median LE 1950, 2019
+```{r}
+
+df.LE.2019 <- fread("00_data/01_life table_BOTH.csv") %>%
+  filter(Year %in% c( 2019) ) %>%
+  filter(Type == "Country/Area" ) %>%
+  filter(Age %in% c(0)) %>%
+  select(ISO3,  Year, Age, `Expectation of life e(x)`) %>%
+  mutate(`Expectation of life e(x)` = as.numeric(`Expectation of life e(x)`))
+
+LE.JPN <- df.LE.2019 %>%
+  filter(ISO3 == "JPN") %>%
+  rename(JPN_LE0 = `Expectation of life e(x)`)  %>%
+  pull(JPN_LE0)
+
+```
+
+
+```{r}
+df.world.stages.LE <- left_join(df.world.stages, df.LE.2019) %>%
+  mutate(JPN_LE0 = LE.JPN) %>%
+  mutate(diff_LE0 = JPN_LE0 - `Expectation of life e(x)` )
+
+```
+
+```{r}
+df.table <- df.world.stages.LE %>%
+  group_by(`Stage Reached`) %>%
+  summarise(median.diff_LE0 = median(diff_LE0),
+            max.diff_LE0 = max(diff_LE0),
+            min.diff_LE0 = min(diff_LE0))
+
+
+df.table1 <- df.world.stages.LE %>%
+  group_by(adv_stage3) %>%
+  summarise(median.diff_LE0 = median(diff_LE0),
+            max.diff_LE0 = max(diff_LE0),
+            min.diff_LE0 = min(diff_LE0)) %>%
+  filter(!adv_stage3 == "") %>%
+  rename(`Stage Reached` = adv_stage3 )
+
+
+df.table2 <- bind_rows(df.table,
+                       df.table1)
+  
+```
+
+
+
+```{r}
+ls.df <- list(df.table2,
+              df.world.stages.LE    )
+
+
+file <- "02_outputs/Table 4_LE v JPN.xlsx"
+write.xlsx(ls.df, file)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

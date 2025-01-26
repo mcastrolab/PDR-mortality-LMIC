@@ -1,0 +1,120 @@
+---
+title: "Untitled"
+author: "Jamie Ponmattam"
+date: "2025-01-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+
+library(tidyverse)
+library(data.table)
+library(lubridate)
+library(haven)
+library(openxlsx)
+library(sf)
+```
+
+GDP income groups
+```{r}
+df.gdp <- read.xlsx("00_data/mpd2023_web.xlsx", sheet = "Full data") %>%
+  rename(ISO3 = countrycode) %>%
+  select(ISO3, year, country, gdppc) %>%
+  filter(year %in% c(1950,  2019)) %>%
+  mutate(ISO3_v2 = if_else(ISO3 %in% c("ARM", "AZE", "BLR", "EST", "GEO", "KAZ", "KGZ", "LTU",
+                                    "LVA", "MDA", "TJK", "TKM", "UKR", "UZB") & year == 1950, "SUN", ISO3)) 
+
+
+df.gdp %>%
+  filter(is.na(gdppc)) %>%
+  filter(!ISO3_v2 == "SUN") %>%
+  select(ISO3_v2, country) %>%
+  unique()
+
+
+
+
+(iso3.na <- df.gdp %>%
+  filter(is.na(gdppc)) %>%
+  filter(!ISO3_v2 == "SUN") %>%
+  pull(ISO3)
+)
+
+
+#   ISO3                country
+# 1  BIH Bosnia and Herzegovina
+# 2  CZE         Czech Republic
+# 3  HRV                Croatia
+# 4  MKD      TFYR of Macedonia
+# 5  MNE             Montenegro
+# 6  PRK        D.P.R. of Korea
+# 7  SRB                 Serbia
+# 8  SVK               Slovakia
+# 9  SVN               Slovenia
+
+
+(gdppc.sun.1950 <- df.gdp %>%
+    filter(country == "Former USSR") %>%
+    filter(year == 1950) %>%
+    pull(gdppc)) 
+
+
+(gdppc.kor.1950 <- df.gdp %>%
+    #filter(country == "Former USSR") %>%
+    filter(ISO3 == "KOR") %>%
+    filter(year == 1950) %>%
+    pull(gdppc)) 
+
+
+
+df.gdp.cat <- df.gdp %>%
+  filter(!country == "Former USSR") %>%
+  mutate(gdppc = if_else(ISO3_v2 == "SUN", gdppc.sun.1950, gdppc )) %>%
+  #mutate(gdppc = if_else(ISO3_v2 == "PRK" & year == 1950, gdppc.kor.1950, gdppc )) %>%
+  select(-ISO3_v2) %>%
+  filter(!ISO3 %in% iso3.na) %>%
+  group_by(year) %>%
+  mutate(quant = cut(gdppc, breaks = quantile(gdppc, probs = seq(0, 1, by = 0.25)), include.lowest = TRUE, ) ) %>%
+  ungroup() %>%
+  mutate(inc.group.gdp = case_when(
+    quant %in% c("[462,1.11e+03]", "[624,4.19e+03]")~ "Lower-income" ,
+    quant %in% c("(1.11e+03,2.48e+03]", "(4.19e+03,1.23e+04]")~ "Lower-middle income" ,
+    quant %in% c("(2.48e+03,4.53e+03]", "(1.23e+04,2.83e+04]")~ "Upper-middle income" ,
+    quant %in% c("(4.53e+03,4.84e+04]", "(2.83e+04,1.51e+05]") ~ "High-income" 
+  ))  %>%
+  mutate(inc.group.gdp = factor(inc.group.gdp, levels = c( "High-income", "Upper-middle income", "Lower-middle income", "Lower-income"))) %>%
+  select(ISO3, year, inc.group.gdp)
+```
+
+
+```{r}
+df.gdp.cat.wide <- df.gdp.cat %>% pivot_wider(names_from = year, values_from = inc.group.gdp)
+```
+
+
+
+```{r}
+sf.world <- read_sf("00_data/world-administrative-boundaries/world-administrative-boundaries.shp") %>%
+  mutate(index = 1) %>%
+  rename(ISO3 = iso3)
+
+sf.world.gdp.cat <- full_join(sf.world, df.gdp.cat.wide) %>%
+  # filter(!is.na(CNTRY_N)) %>%
+  # filter(!is.na(ISO3)) %>%
+  # filter(!is.na(`1950`)) %>%
+  filter(!is.na(status)) %>%
+  mutate(across(c(`1950`, `2019`), ~factor(., levels = c("Lower-income",
+                                                         "Lower-middle income",
+                                                         "Upper-middle income",
+                                                         "High-income")))) %>%
+  mutate(`1950-2019_combination` = paste0(`1950`, ", ", `2019`))
+```
+
+
+```{r}
+file = paste0("02_outputs/Fig_1_inc group_map/Fig_1_inc group_map_shp.shp")
+st_write (sf.world.gdp.cat, file)
+```

@@ -1,0 +1,120 @@
+---
+title: "Untitled"
+author: "Jamie Ponmattam"
+date: "2025-01-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(data.table)
+library(lubridate)
+library(openxlsx)
+library(sf)
+```
+
+```{r}
+sf.world <- read_sf("00_data/world-administrative-boundaries/world-administrative-boundaries.shp") %>%
+  mutate(index = 1) %>%
+  rename(ISO3 = iso3)
+
+```
+
+
+All Transition Stages as of 2019
+
+```{r}
+df.countries <- fread("00_data/stage_ISO3.csv") %>%
+  select(ISO3, `Stage Reached`)
+```
+
+```{r}
+sf.world.stages <- full_join(sf.world, df.countries) %>%
+  mutate(`Stage Reached` =  if_else(is.na(`Stage Reached`), "No GDP data available", `Stage Reached` )) %>%
+  mutate(`Stage Reached` = factor(`Stage Reached`, levels = c("Has not reached Stage 1",
+                                                              "Stage 1", "Stage 2", "Stage 3",
+                                                              "High income country",
+                                                              "No GDP data available")))
+```
+
+
+```{r}
+file <- paste0("02_outputs","/Fig_2_stages_map/all_stages_shp/all_stages_shp.shp")
+st_write(sf.world.stages, file)
+```
+
+
+Individual Stages
+```{r}
+folder<- "00_data"
+file <- paste0(folder, "/00_all stages.csv")
+df.stages <- fread(file, na.strings = c(NA, "")) 
+```
+
+
+```{r}
+sf.world.stages <- full_join(sf.world, df.stages) %>%
+  filter(!is.na(ISO3))
+```
+
+
+
+Stage 1
+```{r}
+sf.stage_1 <- sf.world.stages %>%
+  mutate(stage_1_decade = paste0(plyr::round_any(as.numeric(stage_1), 10, f = floor ), "s") ) %>%
+  mutate(stage_1_decade = case_when(
+    stage_2019 == "High income country" ~ "High income country",
+    stage_2019 == "Has not reached Stage 1" ~ "Has not reached Stage 1",
+    stage_1_decade == "NAs" ~ "No GDP available",
+    TRUE ~ stage_1_decade
+  ) ) %>%
+  select(ISO3, name, country, stage_1, stage_1_decade, stage_2019 ) 
+```
+
+```{r}
+file <- paste0("02_outputs", "/Fig_2_stages_map/stage 1_shp/stage_1_shp.shp")
+st_write(sf.stage_1, file)
+```
+
+
+
+Stage 2
+```{r}
+sf.stage_2 <- sf.world.stages %>%
+  mutate(stage_2 = case_when(
+    stage_2019 == "High income country" ~ "High income country",
+    stage_2019 == "Has not reached Stage 1" ~ "Has not reached Stage 1",
+    stage_2019 == "Stage 1" ~ "Stage 1",
+    is.na(country) ~ "No GDP available",
+    TRUE ~ stage_2
+  ) ) %>%
+  select(ISO3, name, country, stage_2, stage_2019 )
+```
+
+```{r}
+file <- paste0("02_outputs", "/Fig_2_stages_map/stage 2_shp/stage_2_shp.shp")
+st_write(sf.stage_2, file)
+```
+
+Stage 3
+```{r}
+sf.stage_3 <- sf.world.stages %>%
+  mutate(stage_3 = case_when(
+    stage_2019 == "High income country" ~ "High income country",
+    stage_2019 == "Has not reached Stage 1" ~ "Has not reached Stage 1",
+    stage_2019 == "Stage 1" ~ "Stage 1",
+    stage_2019 == "Stage 2" ~ "Stage 2",
+    is.na(country) ~ "No GDP available",
+    TRUE ~ stage_3
+  )) %>%
+  select(ISO3, name, country, stage_3, stage_3_adv, stage_2019 )
+```
+
+
+```{r}
+file <- paste0("02_outputs", "/Fig_2_stages_map/stage 3_shp/stage_3_shp.shp")
+st_write(sf.stage_3, file)
+```

@@ -1,0 +1,68 @@
+---
+title: "Untitled"
+author: "Jamie Ponmattam"
+date: "2025-01-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+library(tidyverse)
+library(data.table)
+library(lubridate)
+library(haven)
+library(MoMAColors)
+```
+
+
+
+# UHC
+```{r}
+file = "00_data/UHC-WHO-9A706FD_ALL_LATEST.csv"
+df.uhc <- fread(file)
+```
+
+```{r}
+df.categories <- fread("00_data/Country_ISO3_income.groups_CSV.csv") %>%
+  mutate(Country = case_when(
+    Country == "Micronesia (Fed. States of)" ~ "Micronesia (Federated States of)",
+    Country == "Dem. People's Republic of Korea" ~ "Democratic People's Republic of Korea",
+    Country == "T/xfcrkiye" ~ "Turkey",
+    TRUE ~ Country
+  ))  %>%
+  mutate(SDG_region = case_when(
+    SDG_region %in% c("Oceania (excluding Australia and New Zealand)",
+                      "Australia/New Zealand") ~ "Oceania",
+    TRUE ~ SDG_region
+  )) %>%
+  select(ISO3, Country, SDG_region)
+```
+
+
+```{r}
+df.uhc.perc.change <- df.uhc %>%
+  left_join(., df.categories) %>%
+  filter(!ISO3 == "" ) %>%
+  select(SDG_region, GEO_NAME_SHORT, ISO3, DIM_TIME, VALUE_NUMERIC) %>%
+  filter(DIM_TIME %in% c(2000, 2019)) %>%
+  pivot_wider(names_from = DIM_TIME,
+              values_from = VALUE_NUMERIC) %>%
+  mutate(perc.chng = (`2019` - `2000`) * 100 / `2000`)
+  
+```
+
+```{r}
+file = paste0("02_outputs/Table_5_UHC_percChange.xlsx")
+write.xlsx(df.uhc.perc.change, file)
+```
+
+
+
+
+
+
+
+
+

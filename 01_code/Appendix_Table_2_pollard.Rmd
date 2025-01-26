@@ -1,0 +1,120 @@
+---
+title: "Untitled"
+author: "Jamie Ponmattam"
+date: "2025-01-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(data.table)
+library(lubridate)
+library(haven)
+library(openxlsx)
+
+sex.selected = "both"
+type.selected = "Country/Area"
+```
+
+
+```{r}
+path.in <- "00_data/cleaned_life table"
+file <- list.files(path.in, full.names = TRUE, pattern = ".csv")
+ls.dat <- lapply(file, fread)
+names(ls.dat) <-  c("both"  )
+df.dat.LE.both.dx  <- ls.dat[[sex.selected]] %>%
+  filter(Type == type.selected) %>%
+  filter(Year %in% c(1950, 1980, 2000, 2019)) %>%
+  rename(`Age interval` = agegrpstart) %>%
+  transmute(Sex, Year, ISO3, Region, `Age interval`,
+            agegrpstart = as.numeric(Age) ,
+            `Expectation of life e(x)` = as.numeric(`Expectation of life e(x)` ), 
+            `Number of survivors l(x)`  = as.numeric( gsub(" ", "", `Number of survivors l(x)` ) ) / 100000,
+            `Central death rate m(x,n)` = as.numeric(`Central death rate m(x,n)` ),
+            `Number of deaths d(x,n)` = as.numeric(`Number of deaths d(x,n)`) )  %>%
+  mutate(`Central death rate m(x,n)_cause` = `Central death rate m(x,n)`)  %>%
+  mutate(`Age group` = case_when(
+    agegrpstart == 0  ~ "< 1",
+    agegrpstart == 1  ~ "1-4",  
+    agegrpstart == 5  ~ "5-9",  
+    agegrpstart == 10 ~ "10-14",  
+    agegrpstart == 15 ~ "15-19",  
+    agegrpstart == 20 ~ "20-24",  
+    agegrpstart == 25 ~ "25-29",  
+    agegrpstart == 30 ~ "30-34",  
+    agegrpstart == 35 ~ "35-39",  
+    agegrpstart == 40 ~ "40-44",  
+    agegrpstart == 45 ~ "45-49",  
+    agegrpstart == 50 ~ "50-54",  
+    agegrpstart == 55 ~ "55-59",  
+    agegrpstart == 60 ~ "60-64",  
+    agegrpstart == 65 ~ "65-69",  
+    agegrpstart == 70 ~ "70-74",  
+    agegrpstart == 75 ~ "75-79",  
+    agegrpstart == 80 ~ "80-84",  
+    agegrpstart == 85 ~ "85-89",  
+    agegrpstart == 90 ~ "90-94",  
+    agegrpstart == 95 ~ "95-99",  
+    agegrpstart == 100 ~ "100+",
+    
+  )) %>%
+  arrange(Sex, Region, agegrpstart, Year)
+```
+
+
+# Pollard function
+```{r}
+source("01_code/99-ff-pollard-function.R")
+```
+
+
+
+
+```{r}
+iso3.names <- unique(df.dat.LE.both.dx$ISO3)
+ls.LE.both <- split(df.dat.LE.both.dx, df.dat.LE.both.dx$ISO3)
+
+fxn.pollard <- function(df){
+  print(unique(df[["ISO3"]]))
+  
+  df.1 <- df %>%
+    ff_pollard(period_var =  Year, mx_group = `Central death rate m(x,n)_cause`, 
+           mx_main = `Central death rate m(x,n)`, 
+           lx_main = `Number of survivors l(x)` , ex_main = `Expectation of life e(x)`)
+  return(df.1)
+}
+
+ls.pollard <- lapply(ls.LE.both, fxn.pollard)
+names(ls.pollard) <- iso3.names
+```
+
+
+
+```{r}
+file <- "02_outputs/03_pollard_results_ISO3.xlsx"
+write.xlsx(ls.pollard, file)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

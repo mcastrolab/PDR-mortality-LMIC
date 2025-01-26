@@ -1,0 +1,207 @@
+---
+title: "Untitled"
+author: "Jamie Ponmattam"
+date: "2025-01-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+options(scipen = 999999)
+
+library(tidyverse)
+library(data.table)
+library(openxlsx)
+```
+
+
+# read in income group -->  categories
+```{r}
+df.gdp <- read.xlsx("00_data/mpd2023_web.xlsx", sheet = "Full data") %>%
+  rename(ISO3 = countrycode) %>%
+  select(ISO3, year, country, gdppc) %>%
+  filter(year %in% c(1950,  2019)) %>%
+  mutate(ISO3_v2 = if_else(ISO3 %in% c("ARM", "AZE", "BLR", "EST", "GEO", "KAZ", "KGZ", "LTU",
+                                    "LVA", "MDA", "TJK", "TKM", "UKR", "UZB") & year == 1950, "SUN", ISO3)) 
+
+
+df.gdp %>%
+  filter(is.na(gdppc)) %>%
+  filter(!ISO3_v2 == "SUN") %>%
+  select(ISO3_v2, country) %>%
+  unique()
+
+
+
+
+(iso3.na <- df.gdp %>%
+  filter(is.na(gdppc)) %>%
+  filter(!ISO3_v2 == "SUN") %>%
+  pull(ISO3)
+)
+
+
+#   ISO3                country
+# 1  BIH Bosnia and Herzegovina
+# 2  CZE         Czech Republic
+# 3  HRV                Croatia
+# 4  MKD      TFYR of Macedonia
+# 5  MNE             Montenegro
+# 6  PRK        D.P.R. of Korea
+# 7  SRB                 Serbia
+# 8  SVK               Slovakia
+# 9  SVN               Slovenia
+
+
+(gdppc.sun.1950 <- df.gdp %>%
+    filter(country == "Former USSR") %>%
+    filter(year == 1950) %>%
+    pull(gdppc)) 
+
+
+
+df.gdp.cat <- df.gdp %>%
+  filter(!country == "Former USSR") %>%
+  mutate(gdppc = if_else(ISO3_v2 == "SUN", gdppc.sun.1950, gdppc )) %>%
+  select(-ISO3_v2) %>%
+  filter(!ISO3 %in% iso3.na) %>%
+  group_by(year) %>%
+  mutate(quant = cut(gdppc, breaks = quantile(gdppc, probs = seq(0, 1, by = 0.25)), include.lowest = TRUE ) ) %>%
+  ungroup() %>%
+  mutate(inc.group.gdp = case_when(
+    quant %in% c("[462,1.11e+03]", "[624,4.19e+03]")~ "Lower-income" ,
+    quant %in% c("(1.11e+03,2.48e+03]", "(4.19e+03,1.23e+04]")~ "Lower-middle income" ,
+    quant %in% c("(2.48e+03,4.53e+03]", "(1.23e+04,2.83e+04]")~ "Upper-middle income" ,
+    quant %in% c("(4.53e+03,4.84e+04]", "(2.83e+04,1.51e+05]") ~ "High-income" 
+  ))  %>%
+  mutate(inc.group.gdp = factor(inc.group.gdp, levels = c( "High-income", "Upper-middle income", "Lower-middle income", "Lower-income"))) %>%
+  select(ISO3,year, inc.group.gdp) %>%
+  filter(!ISO3 %in% c("CSK", "YUG")) %>%
+  rename(Country = ISO3) %>%
+  rename(group = inc.group.gdp)
+
+```
+
+
+
+```{r}
+file <- paste0("02_outputs/Table_2_prep/01a_PREP_01_categories_INCOME_1950_2019.csv")
+fwrite(df.gdp.cat, file)
+```
+
+
+
+# UN LT --> mx
+```{r}
+df.mx.raw <- fread("00_data/01_life table_BOTH.csv") %>%
+  filter(Type == "Country/Area" ) %>%
+  filter(ISO3 %in% df.gdp.cat$Country) %>%
+  select(Sex, ISO3, Year, Age, `Central death rate m(x,n)`) %>%
+  rename(Country = ISO3)
+  
+df.mx.b <- df.mx.raw %>%
+  mutate(Age = paste0("p", Age, "-", as.numeric(Age) + 4)) %>%
+  mutate(Age = case_when(
+    Age == "p0-4" ~ "p0",
+    Age == "p1-5" ~ "p1-4",
+    Age == "p100-104" ~ "p100+",
+    TRUE ~ Age
+  )) %>%
+  pivot_wider(names_from = Age,
+              values_from = `Central death rate m(x,n)`) %>%
+  arrange(Sex, Country, Year)
+  
+```
+
+```{r}
+file <- paste0("02_outputs/Table_2_prep/01b_PREP_02_mx_1950_2019.csv")
+fwrite(df.mx.b, file)
+```
+
+
+
+
+
+
+# Pop
+## Both
+```{r}
+df.pop.raw <- fread("00_data/01_POP_clean_BOTH_WPP2024.csv")  %>%
+  filter(Type == "Country/Area" ) %>%    
+  filter(ISO3 %in% df.gdp.cat$Country) %>%
+  select(-c(Region, `Location code`, Type, `Parent code`))  
+
+df.pop.b <- df.pop.raw %>%
+  pivot_longer(names_to = "Age",
+               values_to = "pop",
+               cols = 4:104) %>%
+  mutate(pop = as.numeric(pop) * 1000, 
+         #Age = if_else(Age == "100+", 100, as.numeric(Age)) ) %>%
+         Age = case_when(
+           as.numeric(Age) %in% 0 ~ "0",
+           as.numeric(Age) %in% 1:4 ~ "1-4",
+           as.numeric(Age) %in% 5:9 ~ "5-9",
+           as.numeric(Age) %in% 10:14 ~ "10-14",
+           as.numeric(Age) %in% 15:19 ~ "15-19",
+           as.numeric(Age) %in% 20:24 ~ "20-24",
+           as.numeric(Age) %in% 25:29 ~ "25-29",
+           as.numeric(Age) %in% 30:34 ~ "30-34",
+           as.numeric(Age) %in% 35:39 ~ "35-39",
+           as.numeric(Age) %in% 40:44 ~ "40-44",
+           as.numeric(Age) %in% 45:49 ~ "45-49",
+           as.numeric(Age) %in% 50:54 ~ "50-54",
+           as.numeric(Age) %in% 55:59 ~ "55-59",
+           as.numeric(Age) %in% 60:64 ~ "60-64",
+           as.numeric(Age) %in% 65:69 ~ "65-69",
+           as.numeric(Age) %in% 70:74 ~ "70-74",
+           as.numeric(Age) %in% 75:79 ~ "75-79",
+           as.numeric(Age) %in% 80:84 ~ "80-84",
+           as.numeric(Age) %in% 85:89 ~ "85-89",
+           as.numeric(Age) %in% 90:94 ~ "90-94",
+           as.numeric(Age) %in% 95:99 ~ "95-99",
+           is.na(as.numeric(Age)) ~ "100+"
+         ),
+         Age2 = case_when(
+           Age == "0" ~ 0,
+           Age == "1-4" ~ 1,
+           Age == "5-9" ~ 5,
+           Age == "100+" ~ 100,
+           TRUE ~ as.numeric(substr(Age, 1, 2)),
+         ) ,
+         Age = paste0("p", Age))  %>%
+  group_by(Sex, ISO3, Year, Age2, Age) %>%
+  summarise(pop = sum(pop)) %>%
+  ungroup() %>%
+  arrange(Sex, ISO3, Year, Age2) %>%
+  select(-Age2) %>%
+  pivot_wider(names_from = Age,
+              values_from = pop) %>%
+  rename(Country = ISO3) %>%
+  arrange(Sex, Country, Year)
+
+
+```
+
+```{r}
+file <- paste0("02_outputs/Table_2_prep/01c_PREP_03_px_1950_2019.csv")
+fwrite(df.pop.b, file)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

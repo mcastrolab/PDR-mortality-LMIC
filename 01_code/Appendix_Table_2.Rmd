@@ -1,0 +1,480 @@
+---
+title: "Appendix Table 2"
+author: "Jamie Ponmattam"
+date: "2025-01-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(data.table)
+library(lubridate)
+library(haven)
+library(openxlsx)
+
+sex.selected = "both"
+type.selected = "Country/Area"
+
+```
+
+
+
+```{r}
+file <- list.files("00_data", full.names = TRUE, pattern = ".csv")
+ls.dat <- lapply(file, fread)
+names(ls.dat) <-  c("both"  )
+df.dat.LE.both.dx  <- ls.dat[[sex.selected]] %>%
+  filter(Type == type.selected) %>%
+  filter(Age == 0 ) %>%
+  transmute(Region, ISO3, Year, 
+            `Expectation of life e(x)` = as.numeric(`Expectation of life e(x)`)) %>%
+  filter(Year <= 2019)
+
+
+
+df.categories <- fread("Country_ISO3_income.groups_CSV.csv") %>%
+  mutate(Country = case_when(
+    Country == "Micronesia (Fed. States of)" ~ "Micronesia (Federated States of)",
+    Country == "Dem. People's Republic of Korea" ~ "Democratic People's Republic of Korea",
+    Country == "T\xfcrkiye" ~ "Turkey",
+    TRUE ~ Country
+  ))  %>%
+  mutate(SDG_region = case_when(
+    SDG_region %in% c("Oceania (excluding Australia and New Zealand)",
+                      "Australia/New Zealand") ~ "Oceania",
+    TRUE ~ SDG_region
+  )) %>%
+  select(ISO3, SDG_region)
+
+```
+
+
+GDP income groups
+```{r}
+df.gdp <- read.xlsx("00_data/mpd2023_web.xlsx", sheet = "Full data") %>%
+  rename(ISO3 = countrycode) %>%
+  select(ISO3, year, country, gdppc) %>%
+  filter(year %in% c(1950,  2019)) %>%
+  mutate(ISO3_v2 = if_else(ISO3 %in% c("ARM", "AZE", "BLR", "EST", "GEO", "KAZ", "KGZ", "LTU",
+                                    "LVA", "MDA", "TJK", "TKM", "UKR", "UZB") & year == 1950, "SUN", ISO3)) 
+
+
+df.gdp %>%
+  filter(is.na(gdppc)) %>%
+  filter(!ISO3_v2 == "SUN") %>%
+  select(ISO3_v2, country) %>%
+  unique()
+
+
+
+
+(iso3.na <- df.gdp %>%
+  filter(is.na(gdppc)) %>%
+  filter(!ISO3_v2 == "SUN") %>%
+  pull(ISO3)
+)
+
+
+#   ISO3                country
+# 1  BIH Bosnia and Herzegovina
+# 2  CZE         Czech Republic
+# 3  HRV                Croatia
+# 4  MKD      TFYR of Macedonia
+# 5  MNE             Montenegro
+# 6  PRK        D.P.R. of Korea
+# 7  SRB                 Serbia
+# 8  SVK               Slovakia
+# 9  SVN               Slovenia
+
+
+(gdppc.sun.1950 <- df.gdp %>%
+    filter(country == "Former USSR") %>%
+    filter(year == 1950) %>%
+    pull(gdppc)) 
+
+
+(gdppc.kor.1950 <- df.gdp %>%
+    #filter(country == "Former USSR") %>%
+    filter(ISO3 == "KOR") %>%
+    filter(year == 1950) %>%
+    pull(gdppc)) 
+
+
+
+df.gdp.cat <- df.gdp %>%
+  filter(!country == "Former USSR") %>%
+  mutate(gdppc = if_else(ISO3_v2 == "SUN", gdppc.sun.1950, gdppc )) %>%
+  #mutate(gdppc = if_else(ISO3_v2 == "PRK" & year == 1950, gdppc.kor.1950, gdppc )) %>%
+  select(-ISO3_v2) %>%
+  filter(!ISO3 %in% iso3.na) %>%
+  group_by(year) %>%
+  mutate(quant = cut(gdppc, breaks = quantile(gdppc, probs = seq(0, 1, by = 0.25)), include.lowest = TRUE, ) ) %>%
+  ungroup() %>%
+  mutate(inc.group.gdp = case_when(
+    quant %in% c("[462,1.11e+03]", "[624,4.19e+03]")~ "Lower-income" ,
+    quant %in% c("(1.11e+03,2.48e+03]", "(4.19e+03,1.23e+04]")~ "Lower-middle income" ,
+    quant %in% c("(2.48e+03,4.53e+03]", "(1.23e+04,2.83e+04]")~ "Upper-middle income" ,
+    quant %in% c("(4.53e+03,4.84e+04]", "(2.83e+04,1.51e+05]") ~ "High-income" 
+  ))  %>%
+  mutate(inc.group.gdp = factor(inc.group.gdp, levels = c( "High-income", "Upper-middle income", "Lower-middle income", "Lower-income"))) %>%
+  select(ISO3, year, inc.group.gdp) %>%
+  filter(year ==2019)
+  
+```
+
+
+```{r}
+df.LE.inc_group <- full_join(df.dat.LE.both.dx , df.gdp.cat %>% filter(year == 2019), by = c()) %>%
+  filter(!is.na(inc.group.gdp))
+```
+
+
+Stage 1:
+```{r}
+df.dat.lmic <- df.LE.inc_group %>% 
+  filter(inc.group.gdp %in% c("Lower-income", "Lower-middle income", "Upper-middle income")) %>%
+  left_join(., df.categories)
+```
+
+
+Which low- and middle-income countries have achieved a life expectancy (e0) of at least 70 years by the last year of our time series? 
+```{r}
+df.dat.lmic.e0.70 <- df.dat.lmic %>%
+  filter(Year == 2019) %>% 
+  filter(`Expectation of life e(x)` >= 70)
+
+df.dat.lmic.e0.70 %>% pull(Region)
+
+lmics.names <- unique(df.dat.lmic.e0.70$ISO3)
+```
+
+
+Can we identify the countries that achieved this milestone first? 
+```{r}
+df.dat.lmic.e0.early <-  df.dat.lmic %>%
+  group_by(ISO3) %>%
+  slice(match(TRUE, `Expectation of life e(x)` >= 70)) %>%
+  ungroup() 
+
+```
+
+
+order by earliest
+```{r}
+df.dat.lmic.e0.early.order <- df.dat.lmic.e0.early %>% arrange(Year)
+```
+
+
+and how many countries are still below this mark according to three categories of e0: 60-70, 50-60, and below 50?
+```{r}
+df.dat.lmic.e0.less70 <- df.dat.lmic %>% 
+  filter(Year == 2019) %>% 
+  filter(`Expectation of life e(x)` < 70) %>%
+  mutate(e0_cat = case_when(
+    `Expectation of life e(x)` < 40 ~ "30 - 40",
+    `Expectation of life e(x)` >= 40 & `Expectation of life e(x)` < 60 ~ "40 - 59",
+    `Expectation of life e(x)` >= 60 & `Expectation of life e(x)` < 70 ~ "60 - 70"
+                                  )) 
+```
+
+
+
+```{r}
+ls.lmics <- list(df.dat.lmic.e0.70 ,
+                 df.dat.lmic.e0.early.order,
+                 df.dat.lmic.e0.less70 )
+names(ls.lmics) <- c("lmics e0 > 70",
+                     "lmics first reached 70",
+                     "lmics <70")
+file = "02_outputs/BOTH_04a_stage 1_lmics and e0.xlsx"
+write.xlsx(ls.lmics, file)
+```
+
+
+
+# Stage 2:
+```{r}
+df.dat.lmic %>% filter(ISO3 %in% lmics.names)
+```
+
+```{r}
+file <- "02_outputs/03_pollard_results_ISO3.xlsx"
+
+sheets <- openxlsx::getSheetNames(file)
+df.poll.50.80.00.19 <- bind_rows(lapply(sheets,openxlsx::read.xlsx,xlsxFile=file)) %>%
+  left_join(., df.categories)
+
+
+```
+
+```{r}
+df.poll.50.80.contribution.30_70 <- df.poll.50.80.00.19 %>%
+  filter(Year == 1950) %>%
+  mutate(groups = case_when(
+    agegrpstart %in% c(0) ~ "0-1",
+    agegrpstart %in% c(1, 5, 10, 15, 20, 25) ~ "1-29", 
+    agegrpstart %in% c(30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100) ~ "30+")) %>%
+  group_by(Sex, SDG_region,  Year, ISO3, groups) %>%
+  summarise(across(c(pollard_exclusive, pollard_interaction, pollard_total), ~sum(.)))
+  
+  
+df.poll.80.00.contribution.30_70 <- df.poll.50.80.00.19 %>%
+  filter(Year == 1980) %>%
+  mutate(groups = case_when(
+    agegrpstart %in% c(0) ~ "0-1",
+    agegrpstart %in% c(1, 5, 10, 15, 20, 25) ~ "1-29", 
+    agegrpstart %in% c(30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100) ~ "30+")) %>%
+  group_by(Sex, SDG_region, Year, ISO3, groups) %>%
+  summarise(across(c(pollard_exclusive, pollard_interaction, pollard_total), ~sum(.)))
+  
+  
+df.poll.00.19.contribution.30_70 <- df.poll.50.80.00.19 %>%
+  filter(Year == 2000) %>%
+  mutate(groups = case_when(
+    agegrpstart %in% c(0) ~ "0-1",
+    agegrpstart %in% c(1, 5, 10, 15, 20, 25) ~ "1-29", 
+    agegrpstart %in% c(30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100) ~ "30+")) %>%
+  group_by(Sex, SDG_region, Year, ISO3, groups) %>%
+  summarise(across(c(pollard_exclusive, pollard_interaction, pollard_total), ~sum(.)))
+```
+
+
+```{r}
+ls.poll.cont <- list(df.poll.50.80.contribution.30_70 %>% filter(groups == "0-1"), 
+                     df.poll.80.00.contribution.30_70 %>% filter(groups == "0-1"),
+                     df.poll.00.19.contribution.30_70 %>% filter(groups == "0-1"),
+                     df.poll.50.80.contribution.30_70 %>% filter(groups == "1-29"),
+                     df.poll.80.00.contribution.30_70 %>% filter(groups == "1-29"),
+                     df.poll.00.19.contribution.30_70 %>% filter(groups == "1-29"),
+                     df.poll.50.80.contribution.30_70 %>% filter(groups == "30+"),
+                     df.poll.80.00.contribution.30_70 %>% filter(groups == "30+"),
+                     df.poll.00.19.contribution.30_70 %>% filter(groups == "30+"))
+names(ls.poll.cont) <- c("1950-1980 0-1 cont",
+                         "1980-2000 0-1 cont",
+                         "2000-2019 0-1 cont",
+                         "1950-1980 1-29 cont",
+                         "1980-2000 1-29 cont",
+                         "2000-2019 1-29 cont",
+                         "1950-1980 30+ cont",
+                         "1980-2000 30+ cont",
+                         "2000-2019 30+ cont")
+```
+
+
+
+```{r}
+file = "02_outputs/BOTH_04b_Stage 2_pollard contribution by groups.xlsx"
+write.xlsx(ls.poll.cont, file)
+```
+
+
+
+```{r}
+ls.comp <- list(
+  df.poll.cont %>% filter(Year == "1950"), 
+  df.poll.cont %>% filter(Year == "1980"),
+  df.poll.cont %>% filter(Year == "2000")
+  )
+
+fxn.wide <- function(df){
+  df %>%
+    pivot_wider(names_from = groups,
+                values_from = c(pollard_exclusive, pollard_interaction, pollard_total)) %>%
+    mutate(`30+.larger.0_1`  = if_else(`pollard_total_30+` > `pollard_total_0-1`, TRUE, FALSE),
+           `30+.larger.1_29` = if_else(`pollard_total_30+` > `pollard_total_1-29`, TRUE, FALSE)) %>%
+    mutate(both.true = case_when(
+      `30+.larger.0_1` == TRUE & `30+.larger.1_29` == TRUE ~ TRUE,
+      TRUE ~ FALSE
+        ),
+      `30+.larger.1_29only` = case_when(
+        `30+.larger.0_1` == FALSE & `30+.larger.1_29` == TRUE ~ TRUE,
+        TRUE ~ FALSE
+        ),
+      `30+.less_than.both` = case_when(
+        `30+.larger.0_1` == FALSE & `30+.larger.1_29` == FALSE ~ TRUE,
+        TRUE ~ FALSE
+        )
+      )
+}
+
+ls.comp.wide <- lapply(ls.comp, fxn.wide)
+names(ls.comp.wide) <- c("comparison-1950-1980",
+                         "comparison-1980-2000",
+                         "comparison-2000-2019")
+```
+
+
+```{r}
+file = "02_outputs/Appendix_table_2a_stage_1.xlsx"
+write.xlsx(ls.comp.wide, file)
+```
+
+
+# Stage 3
+
+
+60+ vs 30-60
+
+1950 - 1980
+```{r}
+df.poll.50.contribution.30_59 <- df.poll.50.80.00.19 %>%
+  filter(Year == 1950) %>%
+  mutate(groups = case_when(
+    agegrpstart %in% c(30, 35, 40, 45, 50, 55) ~ "30-59", 
+    agegrpstart %in% c(60, 65, 70, 75, 80, 85, 90, 95, 100) ~ "60+")) %>%
+  group_by(Sex, SDG_region, Year, ISO3, groups) %>%
+  summarise(across(c(pollard_exclusive, pollard_interaction, pollard_total), ~sum(.)))
+```
+
+1980 - 2000
+```{r}
+df.poll.80.contribution.30_59 <- df.poll.50.80.00.19 %>%
+  filter(Year == 1980) %>%
+  mutate(groups = case_when(
+    agegrpstart %in% c(30, 35, 40, 45, 50, 55) ~ "30-59", 
+    agegrpstart %in% c(60, 65, 70, 75, 80, 85, 90, 95, 100) ~ "60+")) %>%
+  group_by(Sex, SDG_region, Year, ISO3, groups) %>%
+  summarise(across(c(pollard_exclusive, pollard_interaction, pollard_total), ~sum(.)))
+```
+
+
+
+2000 - 2019
+```{r}
+df.poll.00.contribution.30_59 <- df.poll.50.80.00.19 %>%
+  filter(Year == 2000) %>%
+  mutate(groups = case_when(
+    agegrpstart %in% c(30, 35, 40, 45, 50, 55) ~ "30-59", 
+    agegrpstart %in% c(60, 65, 70, 75, 80, 85, 90, 95, 100) ~ "60+")) %>%
+  group_by(Sex, SDG_region, Year, ISO3, groups) %>%
+  summarise(across(c(pollard_exclusive, pollard_interaction, pollard_total), ~sum(.)))
+```
+
+
+85+ vs 80-84
+
+1950 - 1980
+```{r}
+df.poll.50.contribution.80_84 <- df.poll.50.80.00.19 %>%
+  filter(Year == 1950) %>%
+  mutate(groups = case_when(
+    agegrpstart %in% c(80) ~ "80-84", 
+    agegrpstart %in% c(85, 90, 95, 100) ~ "85+")) %>%
+  group_by(Sex, SDG_region, Year, ISO3, groups) %>%
+  summarise(across(c(pollard_exclusive, pollard_interaction, pollard_total), ~sum(.)))
+```
+
+1980 - 2000
+```{r}
+df.poll.80.contribution.80_84 <- df.poll.50.80.00.19 %>%
+  filter(Year == 1980) %>%
+  mutate(groups = case_when(
+    agegrpstart %in% c(80) ~ "80-84", 
+    agegrpstart %in% c(85, 90, 95, 100) ~ "85+")) %>%
+  group_by(Sex, SDG_region, Year, ISO3, groups) %>%
+  summarise(across(c(pollard_exclusive, pollard_interaction, pollard_total), ~sum(.)))
+```
+
+
+
+2000 - 2019
+```{r}
+df.poll.00.contribution.80_84 <- df.poll.50.80.00.19 %>%
+  filter(Year == 2000) %>%
+  mutate(groups = case_when(
+    agegrpstart %in% c(80) ~ "80-84", 
+    agegrpstart %in% c(85, 90, 95, 100) ~ "85+")) %>%
+  group_by(Sex, SDG_region, Year, ISO3, groups) %>%
+  summarise(across(c(pollard_exclusive, pollard_interaction, pollard_total), ~sum(.)))
+```
+
+
+
+
+
+
+```{r}
+ls.stage3 <- list(df.poll.50.contribution.30_60 %>% filter(groups == "30-59"),
+                  df.poll.50.contribution.30_60 %>% filter(groups == "60+"),
+                  df.poll.50.contribution.80_85 %>% filter(groups == "80-84"),
+                  df.poll.50.contribution.80_85 %>% filter(groups == "85+"),
+                  df.poll.80.contribution.30_60 %>% filter(groups == "30-59"),
+                  df.poll.80.contribution.30_60 %>% filter(groups == "60+"),
+                  df.poll.80.contribution.80_85 %>% filter(groups == "80-84"),
+                  df.poll.80.contribution.80_85 %>% filter(groups == "85+"),
+                  df.poll.00.contribution.30_60 %>% filter(groups == "30-59"),
+                  df.poll.00.contribution.30_60 %>% filter(groups == "60+"),
+                  df.poll.00.contribution.80_85 %>% filter(groups == "80-84"),
+                  df.poll.00.contribution.80_85 %>% filter(groups == "85+")  )
+names(ls.stage3) <- c("50-80_30-60",
+                      "50-80_60+",
+                      "50-80_80-85",
+                      "50-80_85+",
+                      "80-00_30-60",
+                      "80-00_60+",
+                      "80-00_80-85",
+                      "80-00_85+",
+                      "00-19_30-60",
+                      "00-19_60+",
+                      "00-19_80-85",
+                      "00-19_85+")
+```
+
+```{r}
+file = "02_outputs/Appendix_table_2b_stage_2.xlsx"
+write.xlsx(ls.stage3, file)
+```
+
+
+
+
+
+
+
+```{r}
+df.stage3 <- bind_rows( lapply(getSheetNames(file), read.xlsx, xlsxFile = file) ) %>%
+  left_join(., df.categories)
+```
+
+
+```{r}
+ls.comp <- list(
+  df.stage3 %>% filter(Year == "1950"), 
+  df.stage3 %>% filter(Year == "1980"),
+  df.stage3 %>% filter(Year == "2000")
+  )
+
+fxn.wide <- function(df){
+  df %>%
+    pivot_wider(names_from = groups,
+                values_from = c(pollard_exclusive, pollard_interaction, pollard_total)) %>%
+    mutate(`60+.larger.30_59`  = if_else(`pollard_total_60+` > `pollard_total_30-59`, TRUE, FALSE),
+           `85+.larger.80_84`  = if_else(`pollard_total_85+` > `pollard_total_80-84`, TRUE, FALSE)) 
+}
+
+ls.comp.wide <- lapply(ls.comp, fxn.wide)
+names(ls.comp.wide) <- c("comparison-1950-1980",
+                         "comparison-1980-2000",
+                         "comparison-2000-2019")
+```
+
+
+```{r}
+file = "02_outputs/Appendix_table_2c_stage_3.xlsx"
+write.xlsx(ls.comp.wide, file)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

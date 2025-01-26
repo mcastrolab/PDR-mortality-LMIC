@@ -1,0 +1,92 @@
+---
+title: "Untitled"
+author: "Jamie Ponmattam"
+date: "2025-01-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+options(scipen = 99999)
+
+library(tidyverse)
+library(data.table)
+library(lubridate)
+library(haven)
+library(openxlsx)
+library(combinat)
+library(Hmisc)
+```
+
+
+
+# LE at BIRTH
+```{r}
+path.in <- "00_data/cleaned_life table"
+file <- list.files(path.in, full.names = TRUE, pattern = ".csv")
+df.dat <- bind_rows(lapply(file, function(x) fread(x) %>% 
+                             select(Sex, Region, ISO3, Age, Year, Type, `Expectation of life e(x)`)  %>%
+                             filter(Type == "Country/Area") %>%
+                             filter(Age == 0 | Age == "0") %>%
+                             mutate(Age = as.numeric(Age),
+                                    e0 = as.numeric(`Expectation of life e(x)`)) %>%
+                             select(-`Expectation of life e(x)`) %>%
+                             filter(Year %in% c(1950, 2019)) )) %>%
+  filter(Sex == "Both") 
+
+
+
+
+file.g.inc <- paste0("02_outputs/01a_PREP_01_categories_INCOME_1950_2019.csv")
+df.iso3 <- fread(file.g.inc) %>%
+  rename(ISO3 = Country)%>%
+  rename(Year = year)
+
+file.p <- paste0("02_outputs/01c_PREP_03_px_1950_2019.csv")
+df.pop <- fread(file.p)
+df.pop.final <- df.pop %>%
+  pivot_longer(names_to = "age_group",
+               values_to = "pop",  
+               cols = 4:25)  %>%
+  # filter(age_group %in% c("p65-69", "p70-74", "p75-79", "p80-84",
+  #                         "p85-89", "p90-94" ,"p95-99", "p100+")) %>%
+  group_by(Sex, Country, Year) %>% 
+  summarise(pop = sum(pop)) %>%
+  ungroup() %>%
+  filter(Year %in% c(1950,2019))
+
+
+
+
+
+
+df.dat <- right_join(df.dat, df.iso3) %>%
+  filter(!ISO3 %in% c("CSK", "YUG"))
+
+
+
+df.dat.ISO3 <- df.dat %>%
+  full_join(., df.pop.final, by = c("Sex", "Year", "ISO3" = "Country")) %>%
+  filter(Type == "Country/Area") %>%
+  #mutate(year2 = Year) %>%
+  pivot_wider(names_from = Year,
+              values_from = c(e0, pop)) %>%
+  filter(!is.na(group))
+
+
+
+```
+
+
+```{r}
+file <- paste0("02_outputs/Table_02b_LE0_1950_2019.xlsx")
+
+ls.df <- list(df.dat.ISO3)
+names(ls.df) <- c("ISO3_LE")
+
+write.xlsx(ls.df, file)
+```
+
+Table_02b_LE0_1950_2019.xlsx  and Table_02d_LE65_1950_2019.xlsx are analysed in 
+XLSX_Table 1_INC_weighted LE0_LE65_var_1950 and 2019.xlsx and XLSX_Table 2_decomp_LE0_LE65_1950 and 2019.xlsx

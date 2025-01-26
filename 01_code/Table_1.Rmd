@@ -1,0 +1,322 @@
+---
+title: "Untitled"
+author: "Jamie Ponmattam"
+date: "2025-01-26"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+options(scipen = 999999)
+
+
+library(tidyverse)
+library(data.table)
+library(openxlsx)
+```
+
+# read in income group
+```{r}
+df.gdp <- read.xlsx("00_data/mpd2023_web.xlsx", sheet = "Full data") %>%
+  rename(ISO3 = countrycode) %>%
+  select(ISO3, year, country, gdppc) %>%
+  filter(year %in% c(1950,  2019)) %>%
+  mutate(ISO3_v2 = if_else(ISO3 %in% c("ARM", "AZE", "BLR", "EST", "GEO", "KAZ", "KGZ", "LTU",
+                                    "LVA", "MDA", "TJK", "TKM", "UKR", "UZB") & year == 1950, "SUN", ISO3)) 
+
+
+df.gdp %>%
+  filter(is.na(gdppc)) %>%
+  filter(!ISO3_v2 == "SUN") %>%
+  select(ISO3_v2, country) %>%
+  unique()
+
+
+
+
+(iso3.na <- df.gdp %>%
+  filter(is.na(gdppc)) %>%
+  filter(!ISO3_v2 == "SUN") %>%
+  pull(ISO3)
+)
+
+
+#   ISO3                country
+# 1  BIH Bosnia and Herzegovina
+# 2  CZE         Czech Republic
+# 3  HRV                Croatia
+# 4  MKD      TFYR of Macedonia
+# 5  MNE             Montenegro
+# 6  PRK        D.P.R. of Korea
+# 7  SRB                 Serbia
+# 8  SVK               Slovakia
+# 9  SVN               Slovenia
+
+
+(gdppc.sun.1950 <- df.gdp %>%
+    filter(country == "Former USSR") %>%
+    filter(year == 1950) %>%
+    pull(gdppc)) 
+
+
+
+df.gdp.cat <- df.gdp %>%
+  filter(!country == "Former USSR") %>%
+  mutate(gdppc = if_else(ISO3_v2 == "SUN", gdppc.sun.1950, gdppc )) %>%
+  select(-ISO3_v2) %>%
+  filter(!ISO3 %in% iso3.na) %>%
+  group_by(year) %>%
+  mutate(quant = cut(gdppc, breaks = quantile(gdppc, probs = seq(0, 1, by = 0.25)), include.lowest = TRUE, ) ) %>%
+  ungroup() %>%
+  mutate(inc.group.gdp = case_when(
+    quant %in% c("[462,1.11e+03]", "[624,4.19e+03]")~ "Lower-income" ,
+    quant %in% c("(1.11e+03,2.48e+03]", "(4.19e+03,1.23e+04]")~ "Lower-middle income" ,
+    quant %in% c("(2.48e+03,4.53e+03]", "(1.23e+04,2.83e+04]")~ "Upper-middle income" ,
+    quant %in% c("(4.53e+03,4.84e+04]", "(2.83e+04,1.51e+05]") ~ "High-income" 
+  ))  %>%
+  mutate(inc.group.gdp = factor(inc.group.gdp, levels = c( "High-income", "Upper-middle income", "Lower-middle income", "Lower-income"))) %>%
+  filter(!ISO3 %in% c("CSK", "YUG")) %>%
+  select(ISO3, year, inc.group.gdp)
+  
+
+```
+
+
+
+# median LE 1950, 2019
+```{r}
+df.LE.1950.2019 <- fread("00_data/01_life table_BOTH.csv") %>%
+  filter(Year %in% c(1950, 2019) ) %>%
+  filter(Type == "Country/Area" ) %>%
+  filter(Age %in% c(0, 65)) %>%
+  select(ISO3,  Year, Age, `Expectation of life e(x)`) %>%
+  mutate(`Expectation of life e(x)` = as.numeric(`Expectation of life e(x)`))
+
+df.LE.1950.2019 %>% 
+  group_by(Year, Age) %>%
+  summarise(med_LE = median(`Expectation of life e(x)`)) %>%
+  ungroup() %>%
+  pivot_wider(names_from = Year,
+              values_from = med_LE) %>%
+  mutate(med_LE.1950_2019 = paste0(`1950`, ", ", `2019`)) 
+```
+
+
+
+
+```{r}
+df.LE.1950.2019.inc_group <- full_join(df.LE.1950.2019, df.gdp.cat, by = c("ISO3", "Year" = "year")) %>%
+  filter(!is.na(inc.group.gdp))
+
+
+df.LE.1950.2019.inc_group %>% 
+  filter(Age == 0) %>% 
+  pivot_wider(names_from = Year, 
+              values_from = c(inc.group.gdp, `Expectation of life e(x)`))  %>%
+  group_by(Age, inc.group.gdp_1950, inc.group.gdp_2019) %>%
+  summarise(med.LE.50 = round(median(`Expectation of life e(x)_1950`), 1) ,
+            med.LE.19 = round(median(`Expectation of life e(x)_2019`), 1),
+            N = n() ) %>%
+  mutate(range_LE_1950.2019 = paste0(med.LE.50, ", ", med.LE.19))
+
+
+df.LE.1950.2019.inc_group %>% 
+  filter(Age == 65) %>% 
+  pivot_wider(names_from = Year, 
+              values_from = c(inc.group.gdp, `Expectation of life e(x)`))  %>%
+  group_by(Age, inc.group.gdp_1950, inc.group.gdp_2019) %>%
+  summarise(med.LE.50 = round(median(`Expectation of life e(x)_1950`), 1) ,
+            med.LE.19 = round(median(`Expectation of life e(x)_2019`), 1))  %>%
+  mutate(range_LE_1950.2019 = paste0(med.LE.50, ", ", med.LE.19))
+
+
+# World
+df.LE.1950.2019.inc_group %>% 
+  filter(Age == 0) %>% 
+  group_by(Age, Year ) %>%
+  summarise(med.LE = round(median(`Expectation of life e(x)`), 1) ) 
+
+df.LE.1950.2019.inc_group %>% 
+  filter(Age == 65) %>% 
+  group_by(Age, Year ) %>%
+  summarise(med.LE = round(median(`Expectation of life e(x)`), 1) ) 
+```
+
+
+# % average annual change in LE from 1950 to 2019
+```{r}
+
+x.0 <- df.LE.1950.2019.inc_group %>% 
+  filter(Age == 0) %>% 
+  pivot_wider(names_from = Year, 
+              values_from = c(inc.group.gdp, `Expectation of life e(x)`))  %>%
+  group_by(Age, inc.group.gdp_1950, inc.group.gdp_2019) %>%
+  summarise(med.LE.50 = median(`Expectation of life e(x)_1950`) ,
+            med.LE.19 = median(`Expectation of life e(x)_2019`))  %>%
+  mutate( avg.annual.chnage.1950.2019 = log(`med.LE.19` / `med.LE.50`) * 100 / (2019 - 1950)) %>%
+  mutate(age = 0)
+
+
+x.65 <- df.LE.1950.2019.inc_group %>% 
+  filter(Age == 65) %>% 
+  pivot_wider(names_from = Year, 
+              values_from = c(inc.group.gdp, `Expectation of life e(x)`))  %>%
+  group_by(Age, inc.group.gdp_1950, inc.group.gdp_2019) %>%
+  summarise(med.LE.50 = median(`Expectation of life e(x)_1950`) ,
+            med.LE.19 = median(`Expectation of life e(x)_2019`))  %>%
+  mutate( avg.annual.chnage.1950.2019 = log(`med.LE.19` / `med.LE.50`) * 100 / (2019 - 1950))%>%
+  mutate(age = 65)
+
+
+
+# World
+x.0.w <- df.LE.1950.2019.inc_group %>% 
+  filter(Age == 0) %>% 
+  group_by(Age, Year ) %>%
+  summarise(med.LE = round(median(`Expectation of life e(x)`), 1)  )  %>%
+  pivot_wider(names_from = Year,
+              values_from = med.LE)  %>%
+  mutate( avg.annual.chnage.1950.2019 = log(`2019` / `1950`) * 100 / (2019 - 1950))%>%
+  mutate(age = 0) %>%
+  mutate(inc.group.gdp_1950 = "world", 
+         inc.group.gdp_2019 = "world")  %>%
+  rename(med.LE.50 = `1950`,
+         med.LE.19 = `2019` )
+
+
+
+x.65.w <- df.LE.1950.2019.inc_group %>% 
+  filter(Age == 65) %>% 
+  group_by(Age, Year ) %>%
+  summarise(med.LE = round(median(`Expectation of life e(x)`), 1)  )  %>%
+  pivot_wider(names_from = Year,
+              values_from = med.LE)  %>%
+  mutate( avg.annual.chnage.1950.2019 = log(`2019` / `1950`) * 100 / (2019 - 1950))%>%
+  mutate(age = 65)%>%
+  mutate(inc.group.gdp_1950 = "world", 
+         inc.group.gdp_2019 = "world") %>%
+  rename(med.LE.50 = `1950`,
+         med.LE.19 = `2019` )
+
+
+df.aac <- bind_rows(x.0, x.65, x.0.w, x.65.w)
+```
+
+
+
+
+# inequity gap
+min LE within inc groups / max LE within inc groups
+```{r}
+
+y.0 <- df.LE.1950.2019.inc_group %>% 
+  filter(Age == 0) %>% 
+  pivot_wider(names_from = Year, 
+              values_from = c(inc.group.gdp, `Expectation of life e(x)`))  %>%
+  group_by(Age, inc.group.gdp_1950, inc.group.gdp_2019) %>%
+  summarise(min.LE.50 = min(`Expectation of life e(x)_1950`),
+            max.LE.50 = max(`Expectation of life e(x)_1950`),
+            min.LE.19 = min(`Expectation of life e(x)_2019`),
+            max.LE.19 = max(`Expectation of life e(x)_2019`)) %>%
+  ungroup() %>%
+  mutate(ineq.ratio.50 = min.LE.50 / max.LE.50,
+         ineq.ratio.19 = min.LE.19 / max.LE.19) %>%
+  mutate(range = paste0(ineq.ratio.50, ", ", ineq.ratio.19))
+
+
+
+
+
+y.65 <- df.LE.1950.2019.inc_group %>% 
+  filter(Age == 65) %>% 
+  pivot_wider(names_from = Year, 
+              values_from = c(inc.group.gdp, `Expectation of life e(x)`))  %>%
+  group_by(Age, inc.group.gdp_1950, inc.group.gdp_2019) %>%
+  summarise(min.LE.50 = min(`Expectation of life e(x)_1950`),
+            max.LE.50 = max(`Expectation of life e(x)_1950`),
+            min.LE.19 = min(`Expectation of life e(x)_2019`),
+            max.LE.19 = max(`Expectation of life e(x)_2019`)) %>%
+  ungroup() %>%
+  mutate(ineq.ratio.50 = min.LE.50 / max.LE.50,
+         ineq.ratio.19 = min.LE.19 / max.LE.19) %>%
+  mutate(range = paste0(ineq.ratio.50, ", ", ineq.ratio.19))
+
+
+
+# World
+y.0.w <- df.LE.1950.2019.inc_group %>% 
+  filter(Age == 0) %>% 
+  pivot_wider(names_from = Year, 
+              values_from = c(`Expectation of life e(x)`))  %>%
+  group_by(Age) %>%
+  summarise(min.LE.50 = min(`1950`, na.rm = TRUE),
+            max.LE.50 = max(`1950`, na.rm = TRUE),
+            min.LE.19 = min(`2019`, na.rm = TRUE),
+            max.LE.19 = max(`2019`, na.rm = TRUE)) %>%
+  ungroup() %>%
+  mutate(ineq.ratio.50 = min.LE.50 / max.LE.50,
+         ineq.ratio.19 = min.LE.19 / max.LE.19) %>%
+  mutate(range = paste0(ineq.ratio.50, ", ", ineq.ratio.19)) %>%
+  mutate(inc.group.gdp_1950 = "world"  ,
+         inc.group.gdp_2019 = "world")
+
+
+
+y.65.w <- df.LE.1950.2019.inc_group %>% 
+  filter(Age == 65) %>% 
+  pivot_wider(names_from = Year, 
+              values_from = c(`Expectation of life e(x)`))  %>%
+  group_by(Age) %>%
+  summarise(min.LE.50 = min(`1950`, na.rm = TRUE),
+            max.LE.50 = max(`1950`, na.rm = TRUE),
+            min.LE.19 = min(`2019`, na.rm = TRUE),
+            max.LE.19 = max(`2019`, na.rm = TRUE)) %>%
+  ungroup() %>%
+  mutate(ineq.ratio.50 = min.LE.50 / max.LE.50,
+         ineq.ratio.19 = min.LE.19 / max.LE.19) %>%
+  mutate(range = paste0(ineq.ratio.50, ", ", ineq.ratio.19))%>%
+  mutate(inc.group.gdp_1950 = "world"  ,
+         inc.group.gdp_2019 = "world")
+
+
+df.ieqR <- bind_rows(y.0,
+                     y.65,
+                     y.0.w,
+                     y.65.w)
+
+```
+
+
+
+```{r}
+df.LE.1950.2019.inc_group  %>%
+  select(ISO3, Year, inc.group.gdp) %>%
+  unique() %>%
+  pivot_wider(names_from = Year,
+              values_from = inc.group.gdp) %>%
+  group_by(`1950`, `2019`) %>%
+  count() 
+  
+```
+
+
+
+
+
+
+
+```{r}
+ls.df <- list(df.aac,
+              df.ieqR)
+names(ls.df) <- c("ann avg chng",
+                  "ineqR")
+
+
+file <- "00_data/Table 1_1950_2019.xlsx"
+write.xlsx(ls.df, file)
+```
+
+
